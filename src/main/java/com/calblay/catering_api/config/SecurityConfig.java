@@ -22,4 +22,10 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    //para desencriptar las passwords
+    @org.springframework.context.annotation.Bean
+    public org.springframework.security.crypto.password.PasswordEncoder passwordEncoder() {
+        return new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
+    }
 }
