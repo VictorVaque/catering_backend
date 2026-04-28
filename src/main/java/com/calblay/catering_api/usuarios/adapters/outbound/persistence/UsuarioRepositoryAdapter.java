@@ -22,4 +22,20 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
                 .map(entity -> new Usuario(entity.getIdUsuario(), entity.getEmail(), entity.getPassword(),
                         entity.getNombre(), entity.getRol()));
     }
+
+    @Override
+    public Optional<Usuario> getByUsuario(String usuario)
+    {
+        Optional<UsuarioEntity> user = jpaRepository.getByUsuario(usuario);
+
+        return entityOptional
+                .map(entity -> new Usuario
+                (
+                    entity.getIdUsuario(),
+                    entity.getUsuario(),
+                    entity.getEmail(),
+                    entity.getNombre(),
+                    entity.getRol()
+                ));
+    }
 }

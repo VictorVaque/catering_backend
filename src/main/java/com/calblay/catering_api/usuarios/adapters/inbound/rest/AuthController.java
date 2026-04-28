@@ -12,7 +12,6 @@ import com.calblay.catering_api.usuarios.application.usecase.LoginResult;
 public class AuthController {
 
     private final LoginUseCase authService;
-
     public AuthController(LoginUseCase authService) {
         this.authService = authService;
     }

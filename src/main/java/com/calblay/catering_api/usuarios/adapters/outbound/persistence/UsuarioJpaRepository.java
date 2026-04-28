@@ -7,4 +7,5 @@ public interface UsuarioJpaRepository extends JpaRepository<UsuarioEntity, Integ
 
     Optional<UsuarioEntity> findByEmail(String email);
 
+    Optional<UsuarioEntity> getByUsuario(String usuario);
 }

@@ -5,4 +5,6 @@ import java.util.Optional;
 
 public interface UsuarioRepositoryPort {
     Optional<Usuario> findByEmail(String email);
+
+    Optional<Usuario> findByUsuario(String usuario);
 }

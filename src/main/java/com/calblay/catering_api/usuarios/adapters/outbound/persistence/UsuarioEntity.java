@@ -7,10 +7,12 @@ import lombok.Data;
 @Entity
 @Table(name = "usuarios")
 public class UsuarioEntity {
-
+    //Atributos de la tabla
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idUsuario;
+
+    private String usuario;
     @Column(name = "correo")
     private String email;
     private String password;
