@@ -1,4 +1,4 @@
-package com.calblay.catering_api.usuarios;
+package com.calblay.catering_api.usuarios.adapters.inbound.rest;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
