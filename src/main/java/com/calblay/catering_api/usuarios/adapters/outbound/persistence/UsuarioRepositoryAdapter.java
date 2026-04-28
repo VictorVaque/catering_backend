@@ -31,7 +31,6 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
         return entityOptional
                 .map(entity -> new Usuario
                 (
-                    entity.getIdUsuario(),
                     entity.getUsuario(),
                     entity.getEmail(),
                     entity.getNombre(),

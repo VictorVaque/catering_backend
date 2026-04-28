@@ -23,8 +23,8 @@ public class UserController {
     {
         try
         {
-            String username = request.getUsuario();
-            PerfilResult resultado = PerfilUseCase.getProfile(username);
+            String usuario = request.getUsuario();
+            PerfilResult resultado = PerfilUseCase.getProfile(usuario);
             PerfilResponse response = new PerfilResponse
             (
                 resultado.getUsuario(),
