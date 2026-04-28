@@ -2,21 +2,21 @@ package com.calblay.catering_api.usuarios.application.usecase;
 
 import org.springframework.stereotype.Service;
 
-import com.calblay.catering_api.usuarios.domain.model.Usuario;
-import com.calblay.catering_api.usuarios.application.port.out.UsuarioRepositoryPort;
+import com.calblay.catering_api.usuarios.domain.model.User;
+import com.calblay.catering_api.usuarios.application.port.out.UserRepositoryPort;
 
 @Service
 public class LoginUseCase {
 
-    private final UsuarioRepositoryPort usuarioRepositoryPort;
+    private final UserRepositoryPort userRepositoryPort;
 
-    public LoginUseCase(UsuarioRepositoryPort usuarioRepositoryPort) {
-        this.usuarioRepositoryPort = usuarioRepositoryPort;
+    public LoginUseCase(UserRepositoryPort userRepositoryPort) {
+        this.userRepositoryPort = userRepositoryPort;
     }
 
     public LoginResult login(String email, String password) {
 
-        Usuario usuario = usuarioRepositoryPort.findByEmail(email)
+        User usuario = userRepositoryPort.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Email o contraseña incorrectos"));
 
         if (!usuario.getPassword().equals(password)) {

@@ -4,24 +4,28 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Optional;
 
-@Service
-public class PerfilUseCase
-{
-    private final UsuarioRepositoryPort usuarioRepositoryPort;
+import com.calblay.catering_api.usuarios.domain.model.User;
+import com.calblay.catering_api.usuarios.application.port.out.UserRepositoryPort;
 
-    public PerfilUseCase(UsuarioRepositoryPort usuarioRepositoryPort)
+@Service
+public class ProfileUseCase
+{
+    private final UserRepositoryPort userRepositoryPort;
+
+    public ProfileUseCase(UserRepositoryPort userRepositoryPort)
     {
-        this.usuarioRepositoryPort = usuarioRepositoryPort;
+        this.userRepositoryPort = userRepositoryPort;
     }
 
     //Obtenemos todos los datos de un usuario a partir de su username
-    public ProfileResponse getProfile(String usuario)
+    public ProfileResult getProfile(String usuario)
     {
-        Usuario user = usuarioRepositoryPort.findByUsuario(usuario)
+        User user = userRepositoryPort.getByUsuario(usuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         //NO HE AÑADIDO NINGUN GESTION DE ERROR
-        return new PerfilResult
+        return new ProfileResult
         (
+
             user.getNombre(),
             user.getUsuario(),
             user.getRol(),

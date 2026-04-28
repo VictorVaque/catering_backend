@@ -3,8 +3,8 @@ package com.calblay.catering_api.usuarios.adapters.inbound.rest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.calblay.catering_api.usuarios.application.usecase.LoginUseCase;
-import com.calblay.catering_api.usuarios.application.usecase.LoginResult;
+import com.calblay.catering_api.usuarios.application.usecase.ProfileUseCase;
+import com.calblay.catering_api.usuarios.application.usecase.ProfileResult;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -13,25 +13,23 @@ public class UserController {
 
     private final ProfileUseCase profileService;
 
-    public ProfileController(ProfileUseCase profileService)
+    public UserController(ProfileUseCase profileService)
     {
         this.profileService = profileService;
     }
     //CONSULTA DE PERFIL DE USUARIO
-    @GetMapping("/{username}")
-    public ResponseEntity<?> getProfile(@RequestBody UserRequest request)
+    @GetMapping("/{usuario}")
+    public ResponseEntity<?> getProfile(@PathVariable("usuario") String usuario)
     {
         try
         {
-            String usuario = request.getUsuario();
-            PerfilResult resultado = PerfilUseCase.getProfile(usuario);
-            PerfilResponse response = new PerfilResponse
-            (
+            ProfileResult resultado = this.profileService.getProfile(usuario);
+            ProfileResponse response = new ProfileResponse(
                 resultado.getUsuario(),
                 resultado.getNombre(),
                 resultado.getCorreo(),
                 resultado.getRol()
-            )
+            );
 
             return ResponseEntity.ok(response);         
         }
