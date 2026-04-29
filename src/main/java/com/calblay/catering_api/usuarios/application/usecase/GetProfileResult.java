@@ -1,12 +1,12 @@
 package com.calblay.catering_api.usuarios.application.usecase;
 
-public class ProfileResult {
+public class GetProfileResult {
     private final String nombre;
     private final String usuario;
     private final String rol;
     private final String correo;
 
-    public ProfileResult(String nombre, String usuario,String rol, String correo)
+    public GetProfileResult(String nombre, String usuario,String rol, String correo)
     {
         this.nombre = nombre;
         this.usuario = usuario;

@@ -3,17 +3,17 @@ package com.calblay.catering_api.usuarios.adapters.inbound.rest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.calblay.catering_api.usuarios.application.usecase.ProfileUseCase;
-import com.calblay.catering_api.usuarios.application.usecase.ProfileResult;
+import com.calblay.catering_api.usuarios.application.usecase.GetProfileUseCase;
+import com.calblay.catering_api.usuarios.application.usecase.GetProfileResult;
 
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "*")
 public class UserController {
 
-    private final ProfileUseCase profileService;
+    private final GetProfileUseCase profileService;
 
-    public UserController(ProfileUseCase profileService)
+    public UserController(GetProfileUseCase profileService)
     {
         this.profileService = profileService;
     }
@@ -23,8 +23,8 @@ public class UserController {
     {
         try
         {
-            ProfileResult resultado = this.profileService.getProfile(usuario);
-            ProfileResponse response = new ProfileResponse(
+            GetProfileResult resultado = this.profileService.getProfile(usuario);
+            GetProfileResponse response = new GetProfileResponse(
                 resultado.getUsuario(),
                 resultado.getNombre(),
                 resultado.getCorreo(),

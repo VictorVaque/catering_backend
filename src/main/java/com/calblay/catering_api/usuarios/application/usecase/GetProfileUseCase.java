@@ -8,22 +8,22 @@ import com.calblay.catering_api.usuarios.domain.model.User;
 import com.calblay.catering_api.usuarios.application.port.out.UserRepositoryPort;
 
 @Service
-public class ProfileUseCase
+public class GetProfileUseCase
 {
     private final UserRepositoryPort userRepositoryPort;
 
-    public ProfileUseCase(UserRepositoryPort userRepositoryPort)
+    public GetProfileUseCase(UserRepositoryPort userRepositoryPort)
     {
         this.userRepositoryPort = userRepositoryPort;
     }
 
     //Obtenemos todos los datos de un usuario a partir de su username
-    public ProfileResult getProfile(String usuario)
+    public GetProfileResult getProfile(String usuario)
     {
         User user = userRepositoryPort.getByUsuario(usuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        //NO HE AÑADIDO NINGUN GESTION DE ERROR
-        return new ProfileResult
+        //NO HE AÑADIDO NINGUNA GESTION DE ERROR
+        return new GetProfileResult
         (
 
             user.getNombre(),

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ProfileResponse {
+public class GetProfileResponse {
     private String usuario;
     private String correo;
     private String nombre;
