@@ -1,5 +1,9 @@
 spring:
-  profiles:
-    active: dev
-  application:
-    name: catering-api
+  datasource:
+    url: jdbc:postgresql://ruta/bdgit
+    username: fooo
+    password: fooo
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
