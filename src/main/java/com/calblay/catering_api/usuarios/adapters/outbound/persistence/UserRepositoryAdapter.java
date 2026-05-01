@@ -5,6 +5,9 @@ import com.calblay.catering_api.usuarios.domain.model.User;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Repository
 public class UserRepositoryAdapter implements UserRepositoryPort {
 
@@ -36,5 +39,45 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
                     entity.getNombre(),
                     entity.getRol()
                 ));
+    }
+
+    @Override
+    public User save(User user)
+    {
+        UserEntity entity = new UserEntity(
+            user.getIdUsuario(),
+            user.getUsuario(),
+            user.getCorreo(),
+            user.getPassword(),
+            user.getNombre(),
+            user.getRol()
+        );
+
+        UserEntity savedEntity = jpaRepository.save(entity);
+
+        return new User(
+            savedEntity.getIdUsuario(),
+            savedEntity.getUsuario(),
+            savedEntity.getEmail(),
+            savedEntity.getPassword(),
+            savedEntity.getNombre(),
+            savedEntity.getRol()
+        );
+    }
+
+    @Override
+    public List<User> findAll()
+    {
+        List<UserEntity> entities = jpaRepository.findAll();
+
+        return entities.stream()
+                .map(entity -> new User(
+                    entity.getIdUsuario(),
+                    entity.getUsuario(),
+                    entity.getEmail(),
+                    entity.getPassword(),
+                    entity.getNombre(),
+                    entity.getRol()
+                )).collect(Collectors.toList());
     }
 }

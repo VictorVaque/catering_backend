@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class GetProfileRequest {
+public class GetProfileRequest
+{
     private String usuario;
 }   

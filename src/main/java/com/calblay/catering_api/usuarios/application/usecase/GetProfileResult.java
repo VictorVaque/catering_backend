@@ -24,7 +24,6 @@ public class GetProfileResult {
         return usuario;
     }
 
-
     public String getRol()
     {
         return rol;

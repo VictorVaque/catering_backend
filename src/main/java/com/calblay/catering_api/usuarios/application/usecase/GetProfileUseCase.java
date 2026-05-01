@@ -22,10 +22,8 @@ public class GetProfileUseCase
     {
         User user = userRepositoryPort.getByUsuario(usuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        //NO HE AÑADIDO NINGUNA GESTION DE ERROR
-        return new GetProfileResult
-        (
-
+        //NO HE AÑADIDO NINGUN GESTION DE ERROR
+        return new GetProfileResult(
             user.getNombre(),
             user.getUsuario(),
             user.getRol(),
