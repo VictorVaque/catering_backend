@@ -7,6 +7,10 @@ import com.calblay.catering_api.platos.application.usecase.GetPlatoInfoUseCase;
 import com.calblay.catering_api.platos.application.usecase.GetPlatoInfoResult;
 import com.calblay.catering_api.platos.domain.model.*;
 
+import com.calblay.catering_api.platos.application.usecase.UpdatePlatoUseCase;
+
+import com.calblay.catering_api.platos.application.usecase.DeletePlatoUseCase;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,8 +21,14 @@ public class PlatoController {
 
     private final GetPlatoInfoUseCase getPlatoInfoUseCase;
 
-    public PlatoController(GetPlatoInfoUseCase getPlatoInfoUseCase) {
+    private final UpdatePlatoUseCase updatePlatoUseCase;
+
+    private final DeletePlatoUseCase deletePlatoUseCase;
+
+    public PlatoController(GetPlatoInfoUseCase getPlatoInfoUseCase, UpdatePlatoUseCase updatePlatoUseCase, DeletePlatoUseCase deletePlatoUseCase) {
         this.getPlatoInfoUseCase = getPlatoInfoUseCase;
+        this.updatePlatoUseCase = updatePlatoUseCase;
+        this.deletePlatoUseCase = deletePlatoUseCase;
     }
 
     @GetMapping("/{id}")
@@ -72,6 +82,26 @@ public class PlatoController {
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updatePlato(@PathVariable("id") Integer id, @RequestBody UpdatePlatoRequest request) {
+        try {
+            updatePlatoUseCase.updatePlato(id, request);
+            return ResponseEntity.ok("Plato actualizado correctamente");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePlato(@PathVariable("id") Integer id) {
+        try {
+            deletePlatoUseCase.deletePlato(id);
+            return ResponseEntity.ok("Plato eliminado correctamente");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
         }
     }
 }

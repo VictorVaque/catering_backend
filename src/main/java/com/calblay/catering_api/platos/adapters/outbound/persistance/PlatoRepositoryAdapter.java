@@ -3,10 +3,17 @@ package com.calblay.catering_api.platos.adapters.outbound.persistence;
 import com.calblay.catering_api.platos.application.port.out.PlatoRepositoryPort;
 import com.calblay.catering_api.platos.domain.model.*;
 
+import com.calblay.catering_api.platos.adapters.inbound.rest.UpdatePlatoRequest;
+import com.calblay.catering_api.platos.adapters.inbound.rest.UpdatePlatoIngredienteRequest;
+import com.calblay.catering_api.platos.adapters.inbound.rest.UpdatePlatoUtensilioRequest;
+import com.calblay.catering_api.platos.adapters.inbound.rest.UpdatePlatoPasoPreparacionRequest;
+
 import org.springframework.stereotype.Repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -118,5 +125,139 @@ public class PlatoRepositoryAdapter implements PlatoRepositoryPort {
             utensilios,
             pasos
         );
+    }
+
+    @Override
+    @Transactional
+    public void updatePlato(Integer idPlato, UpdatePlatoRequest request) {
+
+        PlatoEntity platoEntity = platoJpaRepository.findById(idPlato)
+                .orElseThrow(() -> new RuntimeException("Plato no encontrado"));
+
+        platoEntity.setNombre(request.getNombre());
+        platoEntity.setDescripcion(request.getDescripcion());
+        platoEntity.setImagenUrl(request.getImagenUrl());
+        platoEntity.setTemporada(request.getTemporada());
+        platoEntity.setPrecio(request.getPrecio());
+        platoEntity.setOrigen(request.getOrigen());
+
+        platoJpaRepository.save(platoEntity);
+
+        // Borrar relaciones actuales
+        entityManager.createNativeQuery("""
+            DELETE FROM platoingredientes
+            WHERE idplato = :id
+        """)
+        .setParameter("id", idPlato)
+        .executeUpdate();
+
+        entityManager.createNativeQuery("""
+            DELETE FROM platoutensilios
+            WHERE idplato = :id
+        """)
+        .setParameter("id", idPlato)
+        .executeUpdate();
+
+        entityManager.createNativeQuery("""
+            DELETE FROM pasospreparacion
+            WHERE idplato = :id
+        """)
+        .setParameter("id", idPlato)
+        .executeUpdate();
+
+        // Insertar ingredientes
+        for (UpdatePlatoIngredienteRequest ingrediente : request.getIngredientes()) {
+            entityManager.createNativeQuery("""
+                INSERT INTO platoingredientes
+                    (idplato, idingrediente, unidad, esopcional, cantidadracion)
+                VALUES
+                    (:idplato, :idingrediente, :unidad, :esopcional, :cantidadracion)
+            """)
+            .setParameter("idplato", idPlato)
+            .setParameter("idingrediente", ingrediente.getIdIngrediente())
+            .setParameter("unidad", ingrediente.getUnidad())
+            .setParameter("esopcional", ingrediente.getEsOpcional())
+            .setParameter("cantidadracion", ingrediente.getCantidadRacion())
+            .executeUpdate();
+        }
+
+        // Insertar utensilios
+        for (UpdatePlatoUtensilioRequest utensilio : request.getUtensilios()) {
+            entityManager.createNativeQuery("""
+                INSERT INTO platoutensilios
+                    (idutensilio, idplato, tipo, cocina, cantidadmax, presentacion, estado)
+                VALUES
+                    (
+                        :idutensilio,
+                        :idplato,
+                        CAST(:tipo AS utilidad),
+                        CAST(:cocina AS menajecocina),
+                        :cantidadmax,
+                        CAST(:presentacion AS vajillapresentacion),
+                        CAST(:estado AS estadoregistro)
+                    )
+            """)
+            .setParameter("idutensilio", utensilio.getIdUtensilio())
+            .setParameter("idplato", idPlato)
+            .setParameter("tipo", utensilio.getTipo())
+            .setParameter("cocina", utensilio.getCocina())
+            .setParameter("cantidadmax", utensilio.getCantidadMax())
+            .setParameter("presentacion", utensilio.getPresentacion())
+            .setParameter("estado", utensilio.getEstado())
+            .executeUpdate();
+        }
+
+        // Insertar pasos
+        for (UpdatePlatoPasoPreparacionRequest paso : request.getPasosPreparacion()) {
+            entityManager.createNativeQuery("""
+                INSERT INTO pasospreparacion
+                    (idplato, orden, instruccion, tiempoestimadomin)
+                VALUES
+                    (:idplato, :orden, :instruccion, :tiempoestimadomin)
+            """)
+            .setParameter("idplato", idPlato)
+            .setParameter("orden", paso.getOrden())
+            .setParameter("instruccion", paso.getInstruccion())
+            .setParameter("tiempoestimadomin", paso.getTiempoEstimadoMin())
+            .executeUpdate();
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deletePlato(Integer idPlato) {
+
+        PlatoEntity platoEntity = platoJpaRepository.findById(idPlato)
+                .orElseThrow(() -> new RuntimeException("Plato no encontrado"));
+
+        entityManager.createNativeQuery("""
+            DELETE FROM platoingredientes
+            WHERE idplato = :id
+        """)
+        .setParameter("id", idPlato)
+        .executeUpdate();
+
+        entityManager.createNativeQuery("""
+            DELETE FROM platoutensilios
+            WHERE idplato = :id
+        """)
+        .setParameter("id", idPlato)
+        .executeUpdate();
+
+        entityManager.createNativeQuery("""
+            DELETE FROM pasospreparacion
+            WHERE idplato = :id
+        """)
+        .setParameter("id", idPlato)
+        .executeUpdate();
+
+        entityManager.createNativeQuery("""
+            DELETE FROM etiquetas
+            WHERE idplato = :id
+        """)
+        .setParameter("id", idPlato)
+        .executeUpdate();
+
+        platoJpaRepository.delete(platoEntity);
     }
 }
