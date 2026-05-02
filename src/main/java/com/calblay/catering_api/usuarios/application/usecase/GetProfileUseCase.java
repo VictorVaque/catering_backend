@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.calblay.catering_api.usuarios.domain.model.User;
 import com.calblay.catering_api.usuarios.application.port.out.UserRepositoryPort;
 
