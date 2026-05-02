@@ -258,6 +258,13 @@ public class PlatoRepositoryAdapter implements PlatoRepositoryPort {
         .setParameter("id", idPlato)
         .executeUpdate();
 
+        entityManager.createNativeQuery("""
+            DELETE FROM menuplato
+            WHERE idplato = :id
+        """)
+        .setParameter("id", idPlato)
+        .executeUpdate();
+
         platoJpaRepository.delete(platoEntity);
     }
 }
