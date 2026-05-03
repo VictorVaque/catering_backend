@@ -1,10 +1,14 @@
 package com.calblay.catering_api.usuarios.adapters.outbound.persistence;
-//tengo dudas sobre que se use jakarta en versiones nuevas de spring (revisar)
+
 import jakarta.persistence.*; 
 import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "usuarios")
 public class UserEntity {
     //Atributos de la tabla

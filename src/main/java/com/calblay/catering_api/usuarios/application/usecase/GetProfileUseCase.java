@@ -1,9 +1,9 @@
 package com.calblay.catering_api.usuarios.application.usecase;
-import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
+
+import org.springframework.stereotype.Service;
 import com.calblay.catering_api.usuarios.domain.model.User;
 import com.calblay.catering_api.usuarios.application.port.out.UserRepositoryPort;
 
@@ -22,10 +22,8 @@ public class GetProfileUseCase
     {
         User user = userRepositoryPort.getByUsuario(usuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        //NO HE AÑADIDO NINGUNA GESTION DE ERROR
-        return new GetProfileResult
-        (
-
+        //NO HE AÑADIDO NINGUN GESTION DE ERROR
+        return new GetProfileResult(
             user.getNombre(),
             user.getUsuario(),
             user.getRol(),

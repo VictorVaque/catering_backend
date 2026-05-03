@@ -5,9 +5,10 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class GetProfileResponse {
+public class GetProfileResponse
+{
     private String usuario;
+    private String nombre;    
+    private String rol;    
     private String correo;
-    private String nombre;
-    private String rol;
 }
