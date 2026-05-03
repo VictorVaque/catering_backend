@@ -16,16 +16,16 @@ public class DishEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_plato")
+    @Column(name = "idplato")
     private Long id;
 
     @Column(name = "nombre", nullable = false, length = 50)
     private String name;
 
-    @Column(name = "descripcion", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "descripcion", nullable = false, length = 255)
     private String description;
 
-    @Column(name = "url_imagen", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "imagenurl", nullable = false, length = 255)
     private String imageUrl;
 
     @Column(name = "temporada", length = 25)
