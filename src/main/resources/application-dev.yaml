@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/calblay_db
-    username: postgres
-    password: root
+    url: jdbc:postgresql://192.168.10.10:30432/test
+    username: ptincatering
+    password: ptincatering
   jpa:
     hibernate:
       ddl-auto: update
