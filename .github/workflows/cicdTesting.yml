@@ -50,6 +50,14 @@ jobs:
       # Post: el contexto de build queda alineado con el commit actual.
       - uses: actions/checkout@v4
 
+      # Pre: trae el repositorio de infraestructura donde vive el Dockerfile.
+      # Post: el build puede usar infra/BackDockerfile dentro del workspace.
+      - name: Checkout Infraestructura
+        uses: actions/checkout@v4
+        with:
+          repository: 'PTIN-projecte/infrastructure-devops'
+          path: infra
+
       # Pre: genera un tag corto y único con base en el SHA del commit.
       # Post: el valor TAG queda disponible para los jobs siguientes.
       - name: Generar tag
