@@ -113,6 +113,7 @@ jobs:
         with:
           repository: 'PTIN-projecte/infrastructure-devops'
           path: infra
+          token: ${{ secrets.INFRA_TOKEN }}
 
       # Pre: instala Helm para ejecutar el despliegue en el clúster.
       # Post: el runner queda preparado para aplicar el chart.
@@ -125,12 +126,10 @@ jobs:
       # Post: la aplicación queda actualizada en el namespace testing.
       - name: Helm deploy testing
         run: |
+          export KUBECONFIG=/home/github-runner/actions-runner/.kube/config-testing
           cd infra/Kubernetes/ptincatering
           helm upgrade --install ptin-test . \
             -f values.yaml \
             -f values-dev.yaml \
             --namespace testing \
-            --create-namespace \
-            --set back.image.tag=${{ needs.build-and-push.outputs.TAG }} \
-            --wait \
-            --timeout 5m0s
+            --set back.image.tag=${{ needs.build-and-push.outputs.TAG }}
