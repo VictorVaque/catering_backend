@@ -13,7 +13,13 @@ import lombok.NoArgsConstructor;
 public class UserEntity {
     //Atributos de la tabla
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuarios_idusuario_seq")
+    @SequenceGenerator(
+        name = "usuarios_idusuario_seq",
+        sequenceName = "usuarios_idusuario_seq",
+        allocationSize = 1
+    )    
+    @Column(name = "idusuario")
     private Integer idUsuario;
 
     private String usuario;
