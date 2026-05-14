@@ -114,6 +114,7 @@ jobs:
           repository: 'PTIN-projecte/infrastructure-devops'
           path: infra
           token: ${{ secrets.INFRA_TOKEN }}
+          persist-credentials: false
 
       # Pre: instala Helm para ejecutar el despliegue en el clúster.
       # Post: el runner queda preparado para aplicar el chart.
