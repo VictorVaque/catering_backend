@@ -59,6 +59,8 @@ jobs:
         with:
           repository: 'PTIN-projecte/infrastructure-devops'
           path: infra
+          token: ${{ secrets.INFRA_TOKEN }}
+
 
       # Pre: aplica la release de producción con el nuevo tag.
       # Post: el namespace prod recibe la versión promovida.
