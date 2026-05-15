@@ -61,12 +61,17 @@ jobs:
           path: infra
           token: ${{ secrets.INFRA_TOKEN }}
 
-
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'v3.14.0'
+          
       # Pre: aplica la release de producción con el nuevo tag.
       # Post: el namespace prod recibe la versión promovida.
       - name: Helm deploy production
         id: helm_deploy
         run: |
+          export KUBECONFIG=/home/github-runner/actions-runner/.kube/config-prod
           cd infra/Kubernetes/ptincatering
           helm upgrade --install ptin-prod . \
             -f values.yaml \
