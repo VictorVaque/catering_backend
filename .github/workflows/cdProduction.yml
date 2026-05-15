@@ -25,7 +25,7 @@ jobs:
 
       # ← CRÍTICO: Buscar por el commit del tag, no por github.sha
       - name: Download artifact
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v6
         with:
           workflow: cicdTesting.yml
           name: digest-back-${{ github.sha }}  # ← Esto busca el artifact del commit del tag
