@@ -25,8 +25,8 @@ public class CreateUserRequest {
 
     @NotBlank(message = "El rol es obligatorio")
     @Pattern(
-        regexp = "comercial|produccion|administrador",
-        message = "El rol debe ser: comercial, produccion o administrador"
+        regexp = "Comercial|Produccion|Administrador",
+        message = "El rol debe ser: Comercial, Produccion o Administrador"
     )
     private String rol;
 }
