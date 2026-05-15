@@ -1,3 +1,6 @@
+# ===================================
+# cdProduction.yml (CORREGIDO)
+# ===================================
 name: CD Production
 
 on:
@@ -13,47 +16,56 @@ jobs:
       actions: read
       contents: read
     steps:
-      # Pre: busca el artifact del workflow de testing asociado al commit correcto.
-      # Post: el digest recuperado garantiza que la imagen promocionada es la correcta.
+      # ← Necesitas saber qué commit promocionar
+      # Opción 1: El tag apunta a un commit específico
+      - name: Checkout del tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      # ← CRÍTICO: Buscar por el commit del tag, no por github.sha
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v3
         with:
           workflow: cicdTesting.yml
-          name: digest-back
-          commit: ${{ github.sha }}
+          name: digest-back-${{ github.sha }}  # ← Esto busca el artifact del commit del tag
           workflow_conclusion: success
+          # ← Si el tag no está en el commit exacto, esto fallará
 
-      # Pre: lee el digest guardado en el artifact para reutilizarlo en Docker.
-      # Post: el valor DIGEST queda disponible para el retag de la imagen.
-      - name: Leer digest
-        id: digest
-        run: echo "DIGEST=$(cat digest-back.txt)" >> $GITHUB_OUTPUT
+      - name: Leer metadata
+        id: metadata
+        run: |
+          DIGEST=$(cat digest-back.txt)
+          TAG=$(cat tag-back.txt)
+          COMMIT=$(cat commit-sha.txt)
+          echo "DIGEST=${DIGEST}" >> $GITHUB_OUTPUT
+          echo "TEST_TAG=${TAG}" >> $GITHUB_OUTPUT
+          echo "COMMIT_SHA=${COMMIT}" >> $GITHUB_OUTPUT
+          echo "📦 Promocionando imagen de testing:"
+          echo "  Commit: ${COMMIT}"
+          echo "  Tag testing: ${TAG}"
+          echo "  Digest: ${DIGEST}"
 
-      # Pre: extrae la versión directamente del tag que disparó el CD.
-      # Post: el versionado de la imagen de producción queda alineado con el release.
       - name: Extraer versión del tag
         id: version
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
-      # Pre: autentica en Docker Hub para permitir el push de la imagen de producción.
-      # Post: el runner queda autorizado para publicar la nueva tag de la imagen.
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Pre: reaprovecha el digest validado para crear la imagen de producción.
-      # Post: la imagen se publica con la versión del tag del release.
+      # ← CORRECTO: Re-tag usando el digest exacto
       - name: Re-tag imagen para producción
         run: |
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/catering-back-test@${{ steps.digest.outputs.DIGEST }}
-          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/catering-back-test@${{ steps.digest.outputs.DIGEST }} \
+          echo "🔄 Promocionando imagen validada en testing..."
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/catering-back-test@${{ steps.metadata.outputs.DIGEST }}
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/catering-back-test@${{ steps.metadata.outputs.DIGEST }} \
             ${{ secrets.DOCKERHUB_USERNAME }}/catering-back:${{ steps.version.outputs.VERSION }}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/catering-back:${{ steps.version.outputs.VERSION }}
+          echo "✅ Imagen publicada: catering-back:${{ steps.version.outputs.VERSION }}"
 
-      # Pre: descarga los manifiestos del repositorio de infraestructura.
-      # Post: el runner pasa a tener los charts necesarios para el despliegue.
       - name: Checkout Infraestructura
         uses: actions/checkout@v4
         with:
@@ -65,9 +77,7 @@ jobs:
         uses: azure/setup-helm@v3
         with:
           version: 'v3.14.0'
-          
-      # Pre: aplica la release de producción con el nuevo tag.
-      # Post: el namespace prod recibe la versión promovida.
+
       - name: Helm deploy production
         id: helm_deploy
         run: |
@@ -81,12 +91,13 @@ jobs:
             --wait \
             --timeout 5m0s
 
-          # Pre: intenta restaurar la release anterior si falla el despliegue de producción.
-          # Post: reduce el tiempo de indisponibilidad si el upgrade se rompe.
       - name: Rollback production deployment
         if: failure() && steps.helm_deploy.outcome == 'failure'
         run: |
+          export KUBECONFIG=/home/github-runner/actions-runner/.kube/config-prod
           cd infra/Kubernetes/ptincatering
           if helm history ptin-prod --namespace prod >/dev/null 2>&1; then
+            echo "⚠️ Rollback activado..."
             helm rollback ptin-prod --namespace prod --wait --timeout 5m0s
+            echo "✅ Rollback completado"
           fi
