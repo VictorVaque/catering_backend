@@ -1,6 +1,3 @@
-# ===================================
-# cicdTesting.yml (CORREGIDO)
-# ===================================
 name: CI y CD (Testing)
 
 on:
@@ -34,7 +31,7 @@ jobs:
     outputs:
       TAG: ${{ steps.tag.outputs.TAG }}
       DIGEST: ${{ steps.build.outputs.digest }}
-      COMMIT_SHA: ${{ github.sha }}  # ← AÑADIR
+      COMMIT_SHA: ${{ github.sha }}
     steps:
       - uses: actions/checkout@v4
 
@@ -64,7 +61,6 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/catering-back-test:${{ steps.tag.outputs.TAG }}
 
-      # ← CORREGIDO: Guardar digest Y tag Y commit
       - name: Guardar metadata como artifact
         run: |
           echo "${{ steps.build.outputs.digest }}" > digest-back.txt
@@ -74,7 +70,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: digest-back-${{ github.sha }}  # ← Nombre único por commit
+          name: digest-back-${{ github.sha }}
           path: |
             digest-back.txt
             tag-back.txt
@@ -99,7 +95,6 @@ jobs:
         with:
           version: 'v3.14.0'
 
-      # ← IMPORTANTE: Usar TAG en testing
       - name: Helm deploy testing
         run: |
           export KUBECONFIG=/home/github-runner/actions-runner/.kube/config-testing
