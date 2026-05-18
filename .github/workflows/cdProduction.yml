@@ -84,8 +84,7 @@ jobs:
           export KUBECONFIG=/home/github-runner/actions-runner/.kube/config-prod
           cd infra/Kubernetes/ptincatering
           helm upgrade --install ptin-prod . \
-            -f values.yaml \
-            -f values-prod.yaml \
+            --reuse-values \
             --namespace prod \
             --set back.image.tag=${{ steps.version.outputs.VERSION }} \
             --wait \

@@ -5,9 +5,9 @@ name: CI y CD (Testing)
 
 on:
   push:
-    branches: [ "develop", "main" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: [ "main" ]
 
 jobs:
   ci:
@@ -105,7 +105,6 @@ jobs:
           export KUBECONFIG=/home/github-runner/actions-runner/.kube/config-testing
           cd infra/Kubernetes/ptincatering
           helm upgrade --install ptin-test . \
-            -f values.yaml \
-            -f values-dev.yaml \
+            --reuse-values \
             --namespace testing \
             --set back.image.tag=${{ needs.build-and-push.outputs.TAG }}
