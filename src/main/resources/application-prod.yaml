@@ -6,6 +6,8 @@ spring:
       url: ${SPRING_DATASOURCE_RW_URL}
     read:
       url: ${SPRING_DATASOURCE_RW_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -23,3 +25,6 @@ management:
       application: ${spring.application.name}
 server:
   port: 8080
+
+storage:
+  location: /mnt/storage/imagenes
