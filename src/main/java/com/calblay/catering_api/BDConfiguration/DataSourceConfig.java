@@ -22,13 +22,19 @@ public class DataSourceConfig {
     private String urlWrite;
     @Value("${spring.db.read.url}")
     private String urlRead;
-    
+
+    @Value("${spring.db.username}")
+    private String username;
+
+    @Value("${spring.db.password}")
+    private String password;
+
     @Bean
     public DataSource writeDataSource(){
         HikariDataSource ds = new HikariDataSource();
         ds.setJdbcUrl(urlWrite);
-        ds.setUsername("ptincatering");
-        ds.setPassword("ptincatering");
+        ds.setUsername(username);
+        ds.setPassword(password);
         return ds;
     }
 
@@ -36,8 +42,8 @@ public class DataSourceConfig {
     public DataSource readDataSource(){
         HikariDataSource ds = new HikariDataSource();
         ds.setJdbcUrl(urlRead);
-        ds.setUsername("ptincatering");
-        ds.setPassword("ptincatering");
+        ds.setUsername(username);
+        ds.setPassword(password);
         return ds;
     }
 
