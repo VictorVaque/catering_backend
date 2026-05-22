@@ -9,8 +9,7 @@ import java.util.List;
 public class CreateMenuCommand {
     private String nombre;
     private String imagenUrl;
-    private Integer idUsuario;
-    private String rolUsuario;
+    // no es seguro quitar esto, pero ahora mismo no podemos implementarlo así
     private List<PlatoCommand> platos;
 
     public List<Long> getIdPlatos() {

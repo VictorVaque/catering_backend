@@ -20,4 +20,4 @@ server:
   port: 8080
 
 storage:
-  location: /mnt/storage/imagenes
+  location: ${STORAGE_LOCATION}

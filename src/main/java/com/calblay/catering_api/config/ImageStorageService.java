@@ -29,6 +29,9 @@ public class ImageStorageService {
             String fileName = UUID.randomUUID().toString() + "." + extension;
 
             Path rootLocation = Paths.get(storageLocation);
+            // got errors uploading images via postman. Trying to see if the path is not
+            // correct (should delete later, this is only for debug)
+            Files.createDirectories(rootLocation);
             Path destinationFile = rootLocation.resolve(fileName)
                     .normalize().toAbsolutePath();
 
@@ -42,7 +45,7 @@ public class ImageStorageService {
 
             return fileName;
         } catch (IOException e) {
-            throw new RuntimeException("Error al fallar el almacenamiento en NFS", e);
+            throw new RuntimeException("Error al fallar el almacenamiento en NFSasaa", e);
         }
     }
 }

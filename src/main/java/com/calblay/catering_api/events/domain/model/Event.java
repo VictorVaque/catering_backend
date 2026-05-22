@@ -1,19 +1,25 @@
 package com.calblay.catering_api.events.domain.model;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 public class Event {
     private Long idEvento;
-    private String nombre;
+    private Integer idrecinto;
+    private Integer idmenu;
+    //Ordenado como esta en la bbdd
     private EventType tipo;
+    private String nombre;
+    //private EventType tipo;
     private LocalDateTime fechaHora;
-    private Float duracion;
+    //private Double duracion;
     private Integer comensales;
     private String cliente;
     private String observaciones;
     private EventStatus estado;
+    private Double duracion;
 }
