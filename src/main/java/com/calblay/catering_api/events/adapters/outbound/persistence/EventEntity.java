@@ -29,6 +29,15 @@ public class EventEntity {
     @Column(name = "idevento")
     private Long idEvento;
 
+    // idrecinto
+    @Column(name = "idrecinto")
+    private Integer idRecinto;
+
+    //He añadido tambien la idmenu porque es un atributo que esta en esta tabla de eventos,
+    //es mas por tenerlo a futuro
+    @Column(name = "idmenu")
+    private Integer idMenu;
+
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
@@ -38,9 +47,9 @@ public class EventEntity {
 
     @Column(name = "fechahora", nullable = false)
     private LocalDateTime fechaHora;
-
+    //float8 en posgresql es double en java
     @Column(name = "duracion")
-    private Float duracion;
+    private Double duracion;
 
     @Column(name = "comensales")
     private Integer comensales;
@@ -54,4 +63,5 @@ public class EventEntity {
     @Column(name = "estado")
     @Enumerated(EnumType.STRING)
     private EventStatus estado;
+
 }

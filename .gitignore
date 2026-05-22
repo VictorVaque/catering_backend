@@ -41,3 +41,7 @@ build/
 ### Entorno y Logs ###
 *.log
 .env
+
+
+#local testing images:
+storage/

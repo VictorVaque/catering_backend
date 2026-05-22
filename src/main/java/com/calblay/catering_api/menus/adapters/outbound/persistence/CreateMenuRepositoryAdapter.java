@@ -28,21 +28,21 @@ public class CreateMenuRepositoryAdapter implements CreateMenuPort {
         this.peticionJpaRepository = peticionJpaRepository;
     }
 
-    // Inserta usando MAX(idmenu)+1 para evitar conflicto con secuencia desincronizada
+    // Inserta usando MAX(idmenu)+1 para evitar conflicto con secuencia
+    // desincronizada
     @Override
     public Menu saveMenu(Menu menu) {
-         Object id = entityManager.createNativeQuery(
-            "INSERT INTO menus (nombre, imagenurl, fechacreacion, estado, idcreador) " +
-            "VALUES (:nombre, :imagenUrl, :fechaCreacion, :estado, :idCreador) " +
-            "RETURNING idmenu"
-        )
-        
-        .setParameter("nombre", menu.getNombre())
-        .setParameter("imagenUrl", menu.getImagenUrl())
-        .setParameter("fechaCreacion", menu.getFechaCreacion())
-        .setParameter("estado", menu.getEstado())
-        .setParameter("idCreador", menu.getIdCreador())
-        .executeUpdate();
+        Object id = entityManager.createNativeQuery(
+                "INSERT INTO menus (nombre, imagenurl, fechacreacion, estado, idcreador) " +
+                        "VALUES (:nombre, :imagenUrl, :fechaCreacion, :estado, :idCreador) " +
+                        "RETURNING idmenu")
+
+                .setParameter("nombre", menu.getNombre())
+                .setParameter("imagenUrl", menu.getImagenUrl())
+                .setParameter("fechaCreacion", menu.getFechaCreacion())
+                .setParameter("estado", menu.getEstado())
+                .setParameter("idCreador", menu.getIdCreador())
+                .getSingleResult();
 
         menu.setIdMenu(((Number) id).longValue());
         return menu;
