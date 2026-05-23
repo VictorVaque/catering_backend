@@ -8,4 +8,5 @@ import lombok.NoArgsConstructor; //si no tiene el no args constructor no funcion
 public class AuthRequest {
     private String email;
     private String password;
+
 }

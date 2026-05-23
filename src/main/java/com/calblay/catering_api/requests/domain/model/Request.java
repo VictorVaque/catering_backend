@@ -13,7 +13,8 @@ public class Request {
     private String tipo;
     private Integer idEvento;
 
-    public Request(Integer idPeticion, Integer responsable, Integer creador, LocalDateTime fechaCreacion, String estado, String titulo, String descripcion, String tipo) {
+    public Request(Integer idPeticion, Integer responsable, Integer creador, LocalDateTime fechaCreacion, String estado,
+            String titulo, String descripcion, String tipo) {
         this.idPeticion = idPeticion;
         this.responsable = responsable;
         this.creador = creador;
@@ -24,7 +25,8 @@ public class Request {
         this.tipo = tipo;
     }
 
-    public Request(Integer idPeticion, Integer responsable, Integer creador, LocalDateTime fechaCreacion, String estado, String titulo, String descripcion, String tipo, Integer idEvento) {
+    public Request(Integer idPeticion, Integer responsable, Integer creador, LocalDateTime fechaCreacion, String estado,
+            String titulo, String descripcion, String tipo, Integer idEvento) {
         this.idPeticion = idPeticion;
         this.responsable = responsable;
         this.creador = creador;
@@ -56,6 +58,10 @@ public class Request {
         return estado;
     }
 
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public String getTitulo() {
         return titulo;
     }
@@ -71,4 +77,5 @@ public class Request {
     public Integer getIdEvento() {
         return idEvento;
     }
+
 }

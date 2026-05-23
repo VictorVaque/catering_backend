@@ -7,13 +7,17 @@ public class GetEventInfoResult {
     private final LocalDateTime fechahora;
     private final Integer idrecinto;
     private final Integer comensales;
+    private final Integer idmenu;
+    private final String nombreRecinto; 
 
-    public GetEventInfoResult(String nombre, LocalDateTime fechahora, Integer idrecinto, Integer comensales)
+    public GetEventInfoResult(String nombre, LocalDateTime fechahora, Integer idrecinto, Integer comensales, Integer idmenu, String nombreRecinto)
     {
         this.nombre = nombre;
         this.fechahora = fechahora;
         this.idrecinto = idrecinto;
         this.comensales = comensales;
+        this.idmenu = idmenu;
+        this.nombreRecinto = nombreRecinto;
     }
 
     public String getNombre()
@@ -35,4 +39,7 @@ public class GetEventInfoResult {
     {
         return comensales;
     }
+
+    public Integer getIdmenu() { return idmenu; }
+    public String getNombreRecinto() { return nombreRecinto; }
 }
