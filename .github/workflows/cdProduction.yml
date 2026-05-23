@@ -64,6 +64,8 @@ jobs:
           repository: 'PTIN-projecte/infrastructure-devops'
           path: infra
           token: ${{ secrets.INFRA_TOKEN }}
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Install Helm
         uses: azure/setup-helm@v3
