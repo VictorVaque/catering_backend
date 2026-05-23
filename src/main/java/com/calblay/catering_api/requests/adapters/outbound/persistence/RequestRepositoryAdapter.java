@@ -35,8 +35,24 @@ public class RequestRepositoryAdapter implements RequestRepositoryPort {
 
     @Override
     public Optional<Request> findByIdPeticion(Integer idPeticion) {
-        return jpaRepository.findById(idPeticion)
-                .map(this::toDomain);
+        return jpaRepository.findByIdPeticionWithEventDetails(idPeticion).stream()
+                .findFirst()
+                .map(this::toDomainWithEventName);
+    }
+
+    private Request toDomainWithEventName(Object[] row) {
+        return new Request(
+                toInteger(row[0]),       // idPeticion
+                toInteger(row[2]),       // responsable
+                toInteger(row[3]),       // creador
+                toLocalDateTime(row[4]), // fechaCreacion (de peticionesEventos)
+                toString(row[5]),        // estado (de peticionesEventos)
+                toString(row[6]),        // titulo
+                toString(row[7]),        // descripcion
+                toString(row[8]),        // tipo
+                toInteger(row[1]),       // idEvento
+                toString(row[9])         // nombreEvento
+        );
     }
 
 

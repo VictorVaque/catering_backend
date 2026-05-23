@@ -94,14 +94,16 @@ public class RequestController {
             GetRequestDetailResult result = getRequestDetailUseCase.getRequestDetail(idPeticion);
             return result.getRequest()
                     .<ResponseEntity<?>>map(request -> ResponseEntity.ok(new RequestDetailResponse(
-                            request.getIdPeticion(),
-                            request.getResponsable(),
-                            request.getCreador(),
-                            request.getFechaCreacion(),
-                            request.getEstado(),
-                            request.getTitulo(),
-                            request.getDescripcion(),
-                            request.getTipo())))
+                        request.getIdPeticion(),
+                        request.getResponsable(),
+                        request.getCreador(),
+                        request.getFechaCreacion(),
+                        request.getEstado(),
+                        request.getTitulo(),
+                        request.getDescripcion(),
+                        request.getTipo(),
+                        request.getIdEvento(),
+                        request.getNombreEvento())))
                     .orElseGet(() -> ResponseEntity.status(404).body("Petición no encontrada"));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al obtener el detalle de la petición: " + e.getMessage());
