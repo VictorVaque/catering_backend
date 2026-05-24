@@ -16,7 +16,10 @@ public interface EventJpaRepository extends JpaRepository<EventEntity, Long> {
     );
 
     List<EventEntity> findByFechaHoraBetweenOrderByFechaHoraAsc(LocalDateTime inicio, LocalDateTime fin);
-    // El método findById(Long id) ya viene incluido por defecto al heredar de JpaRepository
-    // Regla de duplicidad: Busca si existe un evento igual, pero ignorando el ID actual (para permitir que se guarde a sí mismo sin saltar error)
+
+    long countByEstado(EventStatus estado);
+
+    // El metodo findById(Long id) ya viene incluido por defecto al heredar de JpaRepository.
+    // Regla de duplicidad: busca si existe un evento igual ignorando el ID actual.
     boolean existsByNombreAndFechaHoraAndIdRecintoAndIdEventoNot(String nombre, LocalDateTime fechaHora, Integer idRecinto, Long idEventoNot);
 }

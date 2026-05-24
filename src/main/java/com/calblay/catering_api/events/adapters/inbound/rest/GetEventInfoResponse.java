@@ -16,6 +16,10 @@ public class GetEventInfoResponse {
     
     //En la BBDD para lo que es recinto o ubicación solamente tenemos el id del recinto, supongo que en otra parte se relacionara la ubicacion a partir del id. 
     private Integer idrecinto;
-    //Numero de comensales
     private Integer comensales;
+    private Integer idmenu;
+    private String nombreRecinto;
+    //Numero de comensales
+    
+
 }

@@ -6,6 +6,12 @@ import java.util.Optional;
 
 public interface RequestRepositoryPort {
     List<Request> findByEventoId(Integer idEvento);
+
     List<Request> findAllWithEventDetails();
+
     Optional<Request> findByIdPeticion(Integer idPeticion);
+    Request saveRequest(Request request);
+
+    void updateStatus(Integer idPeticion, String nuevoEstado);
+
 }

@@ -2,7 +2,12 @@ package com.calblay.catering_api.users.adapters.inbound.rest;
 
 import java.util.stream.Collectors;
 
+import com.calblay.catering_api.*;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,6 +95,7 @@ public class UserController {
             return ResponseEntity.status(500).body("Error al obtener a los usuarios; " + e.getMessage());
         }
     }
+
     @PostMapping("/add")
     public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserRequest request) {
         try {
@@ -122,4 +128,5 @@ public class UserController {
                 .collect(Collectors.joining(", "));
         return ResponseEntity.status(400).body(new ErrorResponse(400, mensajeError));
     }
+    
 }

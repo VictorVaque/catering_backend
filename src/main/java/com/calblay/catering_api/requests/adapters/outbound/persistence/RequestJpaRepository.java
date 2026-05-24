@@ -37,4 +37,21 @@ public interface RequestJpaRepository extends JpaRepository<RequestEntity, Integ
             "FROM peticiones p " +
             "INNER JOIN peticionesEventos pe ON p.idpeticion = pe.idpeticion", nativeQuery = true)
     List<Object[]> findAllWithEventDetails();
+
+    @Query(value = "SELECT " +
+                "p.idpeticion, " +
+                "pe.idevento, " +
+                "p.responsable, " +
+                "p.creador, " +
+                "pe.fechacreacion, " +
+                "pe.estado, " +
+                "p.titulo, " +
+                "p.descripcion, " +
+                "p.tipo, " +
+                "e.nombre " +
+                "FROM peticiones p " +
+                "INNER JOIN peticionesEventos pe ON p.idpeticion = pe.idpeticion " +
+                "INNER JOIN eventos e ON pe.idevento = e.idevento " +
+                "WHERE p.idpeticion = :idPeticion", nativeQuery = true)
+        List<Object[]> findByIdPeticionWithEventDetails(@Param("idPeticion") Integer idPeticion);
 }

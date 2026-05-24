@@ -6,19 +6,18 @@ import java.time.LocalDateTime;
 import com.calblay.catering_api.events.domain.model.Event;
 
 @Data
-public class EventResponseDTO {
+public class EventResponse {
     private Long id;
     private String nombre;
     private LocalDateTime fechaHora;
     private LocalDateTime fechaHoraFinal;
 
-    public static EventResponseDTO desde(Event evento) {
-        EventResponseDTO dto = new EventResponseDTO();
+    public static EventResponse desde(Event evento) {
+        EventResponse dto = new EventResponse();
         dto.id = evento.getIdEvento();
         dto.nombre = evento.getNombre();
         dto.fechaHora = evento.getFechaHora();
-        dto.fechaHoraFinal = evento.getFechaHora()
-                .plusMinutes((long)(evento.getDuracion() * 60));
+        dto.fechaHoraFinal = evento.getFechaHoraFinal();
         return dto;
     }
 }

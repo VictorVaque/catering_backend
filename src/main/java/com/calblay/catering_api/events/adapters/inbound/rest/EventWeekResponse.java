@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class EventWeekResponseDTO {
+public class EventWeekResponse {
     private LocalDate fechaBuscada;
-    private Map<LocalDate, List<EventResponseDTO>> semana;
+    private Map<LocalDate, List<EventResponse>> semana;
 }

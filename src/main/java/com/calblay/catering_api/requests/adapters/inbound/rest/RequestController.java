@@ -6,8 +6,12 @@ import com.calblay.catering_api.requests.application.usecase.GetAllRequestsResul
 import com.calblay.catering_api.requests.application.usecase.GetAllRequestsUseCase;
 import com.calblay.catering_api.requests.application.usecase.GetRequestsListResult;
 import com.calblay.catering_api.requests.application.usecase.GetRequestsListUseCase;
+import com.calblay.catering_api.requests.application.usecase.UpdateRequestStatusUseCase;
 import com.calblay.catering_api.requests.application.usecase.GetRequestDetailResult;
 import com.calblay.catering_api.requests.application.usecase.GetRequestDetailUseCase;
+import com.calblay.catering_api.requests.application.usecase.CreateRequestUseCase;
+import com.calblay.catering_api.requests.application.usecase.CreateRequestResult;
+import com.calblay.catering_api.requests.adapters.inbound.rest.RequestStatusUpdate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +26,18 @@ public class RequestController {
     private final GetAllRequestsUseCase getAllRequestsUseCase;
     private final GetRequestsListUseCase getRequestsListUseCase;
     private final GetRequestDetailUseCase getRequestDetailUseCase;
+    private final UpdateRequestStatusUseCase updateRequestStatusUseCase;
+    private final CreateRequestUseCase createRequestUseCase;
 
-    public RequestController(GetAllRequestsUseCase getAllRequestsUseCase, GetRequestsListUseCase getRequestsListUseCase, GetRequestDetailUseCase getRequestDetailUseCase) {
+    public RequestController(GetAllRequestsUseCase getAllRequestsUseCase, GetRequestsListUseCase getRequestsListUseCase,
+            GetRequestDetailUseCase getRequestDetailUseCase, UpdateRequestStatusUseCase updateRequestStatusUseCase, CreateRequestUseCase createRequestUseCase) {
         this.getAllRequestsUseCase = getAllRequestsUseCase;
         this.getRequestsListUseCase = getRequestsListUseCase;
         this.getRequestDetailUseCase = getRequestDetailUseCase;
+        this.updateRequestStatusUseCase = updateRequestStatusUseCase;
+         this.createRequestUseCase = createRequestUseCase;
     }
+
     // Actualizarlo para que no sea con el header
     @GetMapping("/event/{idEvento}")
     public ResponseEntity<?> getRequestsList(@PathVariable("idEvento") Integer idEvento) {
@@ -43,8 +53,7 @@ public class RequestController {
                             r.getTitulo(),
                             r.getTipo(),
                             r.getFechaCreacion(),
-                            r.getEstado()
-                    ))
+                            r.getEstado()))
                     .collect(Collectors.toList());
 
             return ResponseEntity.ok(new GetRequestsListResponse(requests));
@@ -67,8 +76,7 @@ public class RequestController {
                             r.getEstado(),
                             r.getTitulo(),
                             r.getDescripcion(),
-                            r.getTipo()
-                    ))
+                            r.getTipo()))
                     .collect(Collectors.toList());
             return ResponseEntity.ok(new GetAllRequestsResponse(requests));
         } catch (Exception e) {
@@ -86,18 +94,50 @@ public class RequestController {
             GetRequestDetailResult result = getRequestDetailUseCase.getRequestDetail(idPeticion);
             return result.getRequest()
                     .<ResponseEntity<?>>map(request -> ResponseEntity.ok(new RequestDetailResponse(
-                            request.getIdPeticion(),
-                            request.getResponsable(),
-                            request.getCreador(),
-                            request.getFechaCreacion(),
-                            request.getEstado(),
-                            request.getTitulo(),
-                            request.getDescripcion(),
-                            request.getTipo()
-                    )))
+                        request.getIdPeticion(),
+                        request.getResponsable(),
+                        request.getCreador(),
+                        request.getFechaCreacion(),
+                        request.getEstado(),
+                        request.getTitulo(),
+                        request.getDescripcion(),
+                        request.getTipo(),
+                        request.getIdEvento(),
+                        request.getNombreEvento())))
                     .orElseGet(() -> ResponseEntity.status(404).body("Petición no encontrada"));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al obtener el detalle de la petición: " + e.getMessage());
         }
     }
+
+    @PostMapping
+    public ResponseEntity<?> createRequest(@RequestBody CreateRequestRequest request) {
+        try {
+            CreateRequestResult result = createRequestUseCase.createRequest(request);
+
+            return ResponseEntity.ok(new CreateRequestResponse(
+                    result.getMensaje(),
+                    result.getIdPeticion()
+            ));
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body("Error: " + e.getMessage());
+        }
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateRequestStatus(
+            @PathVariable("id") Integer idPeticion,
+            @RequestBody RequestStatusUpdate requestBody) {
+   
+        try {
+            updateRequestStatusUseCase.updateStatus(idPeticion, requestBody.getStatus());
+
+            return ResponseEntity.ok()
+                    .body(requestBody.getStatus());
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al actualizar el estado de la petición: " + e.getMessage());
+        }
+    }
+
 }

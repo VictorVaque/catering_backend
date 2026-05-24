@@ -10,15 +10,20 @@ import java.util.Optional;
 public interface EventRepositoryPort {
 
     List<Event> findByFechaHoraBetweenAndEstadoNot(
-        LocalDateTime inicio,
-        LocalDateTime fin,
-        EventStatus estado
-    );
-
+            LocalDateTime inicio,
+            LocalDateTime fin,
+            EventStatus estado);
 
     List<Event> findByFecha(LocalDateTime inicio, LocalDateTime fin);
-    //id del evento es un long
+
+    List<Event> findAllEvents();
+
+    // id del evento es un long
     Optional<Event> findById(Long id);
+
     Event save(Event event);
+
     boolean existsSimilarEvent(String nombre, LocalDateTime fechaHora, Integer idrecinto, Long idEventoToIgnore);
+
+    Event create(Event event);
 }

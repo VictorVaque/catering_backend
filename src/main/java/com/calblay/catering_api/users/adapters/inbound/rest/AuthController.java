@@ -11,19 +11,20 @@ import com.calblay.catering_api.users.application.usecase.LoginResult;
 @CrossOrigin(origins = "*")
 public class AuthController {
 
-    private final LoginUseCase authService;
-    public AuthController(LoginUseCase authService) {
-        this.authService = authService;
+    private final LoginUseCase loginUseCase;
+
+    public AuthController(LoginUseCase loginUseCase) {
+        this.loginUseCase = loginUseCase;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         try {
-            String email = request.getEmail();
-            String password = request.getPassword();
+            LoginResult result = loginUseCase.execute(
+                    request.getEmail(),
+                    request.getPassword());
 
-            LoginResult resultado = authService.login(email, password);
-            AuthResponse response = new AuthResponse(resultado.getToken(), resultado.getRol());
+            AuthResponse response = new AuthResponse(result.getToken(), result.getRol());
 
             return ResponseEntity.ok(response);
 
@@ -31,4 +32,5 @@ public class AuthController {
             return ResponseEntity.status(401).body(e.getMessage());
         }
     }
+
 }

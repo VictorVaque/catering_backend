@@ -12,8 +12,13 @@ public class RequestDetailResponse {
     private String titulo;
     private String descripcion;
     private String tipo;
+    private Integer idEvento;
+    private String nombreEvento;
 
-    public RequestDetailResponse(Integer idPeticion, Integer responsable, Integer creador, LocalDateTime fechaCreacion, String estado, String titulo, String descripcion, String tipo) {
+    public RequestDetailResponse(Integer idPeticion, Integer responsable, Integer creador,
+            LocalDateTime fechaCreacion, String estado, String titulo,
+            String descripcion, String tipo,
+            Integer idEvento, String nombreEvento) {
         this.idPeticion = idPeticion;
         this.responsable = responsable;
         this.creador = creador;
@@ -22,6 +27,8 @@ public class RequestDetailResponse {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.tipo = tipo;
+        this.idEvento = idEvento;
+        this.nombreEvento = nombreEvento;
     }
 
     public Integer getIdPeticion() {
@@ -55,4 +62,7 @@ public class RequestDetailResponse {
     public String getTipo() {
         return tipo;
     }
+
+    public Integer getIdEvento() { return idEvento; }
+    public String getNombreEvento() { return nombreEvento; }
 }

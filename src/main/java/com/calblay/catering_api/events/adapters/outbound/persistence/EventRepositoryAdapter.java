@@ -8,6 +8,7 @@ import com.calblay.catering_api.menus.adapters.outbound.persistence.MenuJpaRepos
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class EventRepositoryAdapter implements EventRepositoryPort {
@@ -44,6 +45,13 @@ public class EventRepositoryAdapter implements EventRepositoryPort {
                 .toList();
     }
 
+    @Override
+    public List<Event> findAllEvents() {
+        return jpaRepository.findAll().stream()
+                .map(this::toDomain) 
+                .collect(Collectors.toList());
+    }
+
     private Event toDomain(EventEntity entity) {
         String nombreRecinto = null;
         String ubicacion = null;
@@ -64,23 +72,21 @@ public class EventRepositoryAdapter implements EventRepositoryPort {
 
         return new Event(
                 entity.getIdEvento(),
-                null, //ID recinto
-                null, //ID menu
+                null, // ID recinto
+                null, // ID menu
                 entity.getTipo(),
                 entity.getNombre(),
-            //    entity.getTipo(),
+                // entity.getTipo(),
                 entity.getFechaHora(),
-            //    entity.getDuracion(),
+                // entity.getDuracion(),
                 entity.getComensales(),
                 entity.getCliente(),
                 entity.getObservaciones(),
                 entity.getEstado(),
-                entity.getDuracion()
-        );
+                entity.getDuracion());
     }
 
-
-    //Encontramos evento a partir de su id 
+    // Encontramos evento a partir de su id
     @Override
     public Optional<Event> findById(Long id) {
         return jpaRepository.findById(id)
@@ -99,23 +105,23 @@ public class EventRepositoryAdapter implements EventRepositoryPort {
                 entity.getCliente(),
                 entity.getObservaciones(),
                 entity.getEstado(),
-                entity.getDuracion()
-        );
+                entity.getDuracion());
     }
 
     @Override
-    public boolean existsSimilarEvent(String nombre, LocalDateTime fechaHora, Integer idrecinto, Long idEventoToIgnore) {
+    public boolean existsSimilarEvent(String nombre, LocalDateTime fechaHora, Integer idrecinto,
+            Long idEventoToIgnore) {
         return jpaRepository.existsByNombreAndFechaHoraAndIdRecintoAndIdEventoNot(
-                nombre, 
-                fechaHora, 
-                idrecinto, 
-                idEventoToIgnore
-        );
+                nombre,
+                fechaHora,
+                idrecinto,
+                idEventoToIgnore);
     }
 
     @Override
     public Event save(Event event) {
-        // 1. Buscamos la entidad original para no pisar columnas con nulls accidentalmente
+        // 1. Buscamos la entidad original para no pisar columnas con nulls
+        // accidentalmente
         EventEntity entity = jpaRepository.findById(event.getIdEvento())
                 .orElseThrow(() -> new RuntimeException("No se encontró el evento para actualizar"));
 
@@ -128,5 +134,22 @@ public class EventRepositoryAdapter implements EventRepositoryPort {
         // 3. Guardamos y devolvemos mapeado
         EventEntity savedEntity = jpaRepository.save(entity);
         return toDomainInfo(savedEntity); // Reutilizamos el mapeador
+    }
+
+    @Override
+    public Event create(Event event) {
+        EventEntity entity = new EventEntity(
+                null, // ID generado por la BBDD
+                event.getIdrecinto(),
+                event.getIdmenu(),
+                event.getNombre(),
+                event.getTipo(),
+                event.getFechaHora(),
+                event.getDuracion(),
+                event.getComensales(),
+                event.getCliente(),
+                event.getObservaciones(),
+                event.getEstado());
+        return toDomainInfo(jpaRepository.save(entity));
     }
 }
