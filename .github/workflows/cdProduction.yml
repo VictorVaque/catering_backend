@@ -77,12 +77,7 @@ jobs:
         run: |
           export KUBECONFIG=/home/github-runner/actions-runner/.kube/config-prod
           cd infra/Kubernetes/ptincatering
-          helm upgrade --install ptin-prod . \
-            --reuse-values \
-            --namespace prod \
-            --set back.image.tag=${{ steps.version.outputs.VERSION }} \
-            --wait \
-            --timeout 5m0s
+          helm upgrade --install ptin-test . -f values.yaml -f values-dev.yaml --set back.image.tag=${{ steps.version.outputs.VERSION }} --namespace testing --create-namespace --wait --timeout 5m0s
 
       - name: Rollback production deployment
         if: failure() && steps.helm_deploy.outcome == 'failure'
