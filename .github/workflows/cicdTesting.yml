@@ -100,4 +100,7 @@ jobs:
         run: |
           export KUBECONFIG=/home/github-runner/actions-runner/.kube/config-testing
           cd infra/Kubernetes/ptincatering
-          helm upgrade --install ptin-test . -f values.yaml -f values-dev.yaml --set back.image.tag=${{ needs.build-and-push.outputs.TAG }} --namespace testing --create-namespace --wait --timeout 5m0s
+          helm upgrade --install ptin-test . \
+            --reuse-values \
+            --namespace testing \
+            --set back.image.tag=${{ needs.build-and-push.outputs.TAG }}
