@@ -8,10 +8,6 @@ on:
 jobs:
   deploy-production:
     runs-on: self-hosted
-    environment: production
-    permissions:
-      actions: read
-      contents: read
     steps:
       - name: Checkout del tag
         uses: actions/checkout@v4
