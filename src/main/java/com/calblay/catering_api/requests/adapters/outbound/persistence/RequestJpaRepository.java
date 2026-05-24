@@ -15,7 +15,7 @@ public interface RequestJpaRepository extends JpaRepository<RequestEntity, Integ
             "p.responsable, " +                    // De tabla peticiones
             "p.creador, " +                        // De tabla peticiones
             "pe.fechacreacion, " +                // De tabla peticionesEventos
-            "pe.estado, " +                        // De tabla peticionesEventos
+            "p.estado, " +                        // De tabla peticiones
             "p.titulo, " +                         // De tabla peticiones
             "p.descripcion, " +                    // De tabla peticiones
             "p.tipo " +                            // De tabla peticiones
@@ -30,7 +30,7 @@ public interface RequestJpaRepository extends JpaRepository<RequestEntity, Integ
             "p.responsable, " +                    // De tabla peticiones
             "p.creador, " +                        // De tabla peticiones
             "pe.fechacreacion, " +                // De tabla peticionesEventos
-            "pe.estado, " +                        // De tabla peticionesEventos
+            "p.estado, " +                        // De tabla peticiones
             "p.titulo, " +                         // De tabla peticiones
             "p.descripcion, " +                    // De tabla peticiones
             "p.tipo " +                            // De tabla peticiones
@@ -46,7 +46,7 @@ public interface RequestJpaRepository extends JpaRepository<RequestEntity, Integ
                 "p.creador," +
                 "u_crea.nombre AS name_C," +
                 "pe.fechacreacion, " +
-                "pe.estado, " +
+                "p.estado, " +
                 "p.titulo, " +
                 "p.descripcion, " +
                 "p.tipo, " +
