@@ -96,7 +96,9 @@ public class RequestController {
                     .<ResponseEntity<?>>map(request -> ResponseEntity.ok(new RequestDetailResponse(
                         request.getIdPeticion(),
                         request.getResponsable(),
+                        request.getResponsableName(),
                         request.getCreador(),
+                        request.getCreadorName(),
                         request.getFechaCreacion(),
                         request.getEstado(),
                         request.getTitulo(),

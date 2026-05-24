@@ -42,7 +42,9 @@ public interface RequestJpaRepository extends JpaRepository<RequestEntity, Integ
                 "p.idpeticion, " +
                 "pe.idevento, " +
                 "p.responsable, " +
-                "p.creador, " +
+                "u_resp.nombre  AS name_R," +
+                "p.creador," +
+                "u_crea.nombre AS name_C," +
                 "pe.fechacreacion, " +
                 "pe.estado, " +
                 "p.titulo, " +
@@ -52,6 +54,8 @@ public interface RequestJpaRepository extends JpaRepository<RequestEntity, Integ
                 "FROM peticiones p " +
                 "INNER JOIN peticionesEventos pe ON p.idpeticion = pe.idpeticion " +
                 "INNER JOIN eventos e ON pe.idevento = e.idevento " +
+                "INNER JOIN usuarios u_resp ON p.responsable = u_resp.idusuario " +
+                "INNER JOIN usuarios u_crea ON p.creador = u_crea.idusuario " +
                 "WHERE p.idpeticion = :idPeticion", nativeQuery = true)
         List<Object[]> findByIdPeticionWithEventDetails(@Param("idPeticion") Integer idPeticion);
 }

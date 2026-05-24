@@ -44,14 +44,16 @@ public class RequestRepositoryAdapter implements RequestRepositoryPort {
         return new Request(
                 toInteger(row[0]),       // idPeticion
                 toInteger(row[2]),       // responsable
-                toInteger(row[3]),       // creador
-                toLocalDateTime(row[4]), // fechaCreacion (de peticionesEventos)
-                toString(row[5]),        // estado (de peticionesEventos)
-                toString(row[6]),        // titulo
-                toString(row[7]),        // descripcion
-                toString(row[8]),        // tipo
+                toString(row[3]),        // nombreResponsable
+                toInteger(row[4]),       // creador
+                toString(row[5]),        // nombreCreador
+                toLocalDateTime(row[6]), // fechaCreacion (de peticionesEventos)
+                toString(row[7]),        // estado (de peticionesEventos)
+                toString(row[8]),        // titulo
+                toString(row[9]),        // descripcion
+                toString(row[10]),       // tipo
                 toInteger(row[1]),       // idEvento
-                toString(row[9])         // nombreEvento
+                toString(row[11])        // nombreEvento
         );
     }
 

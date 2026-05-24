@@ -6,6 +6,8 @@ public class Request {
     private Integer idPeticion;
     private Integer responsable;
     private Integer creador;
+    private String name_R;
+    private String name_C;
     private LocalDateTime fechaCreacion;
     private String estado;
     private String titulo;
@@ -14,12 +16,14 @@ public class Request {
     private Integer idEvento;
     private String nombreEvento;
 
-    public Request(Integer idPeticion, Integer responsable, Integer creador, LocalDateTime fechaCreacion,
+    public Request(Integer idPeticion, Integer responsable, String name_R, Integer creador, String name_C, LocalDateTime fechaCreacion,
         String estado, String titulo, String descripcion, String tipo,
         Integer idEvento, String nombreEvento) {
         this.idPeticion = idPeticion;
         this.responsable = responsable;
+        this.name_R = name_R;
         this.creador = creador;
+        this.name_C = name_C;
         this.fechaCreacion = fechaCreacion;
         this.estado = estado;
         this.titulo = titulo;
@@ -62,8 +66,16 @@ public class Request {
         return responsable;
     }
 
+    public String getResponsableName() {
+        return name_R;
+    }
+
     public Integer getCreador() {
         return creador;
+    }
+
+    public String getCreadorName() {
+        return name_C;
     }
 
     public LocalDateTime getFechaCreacion() {
